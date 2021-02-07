@@ -8,42 +8,22 @@ namespace Cards
 {
     public class CardSet
     {
-        readonly Random random = new Random();
+        readonly Random rnd = new Random();
 
-        public CardSet()
-        {
-            Cards = new List<Card>();
-        }
+        public CardSet() => Cards = new List<Card>();
 
-        public CardSet(List<Card> cards)
-        {
-            Cards = cards;
-        }
+        public CardSet(List<Card> cards) => Cards = cards;
 
-        public CardSet(params Card[] cards)
-        {
-            Cards = new List<Card>(cards);
-        }
+        public CardSet(params Card[] cards) => Cards = new List<Card>(cards);
 
         public List<Card> Cards { get; set; }
-        public int Count
-        {
-            get
-            {
-                return Cards.Count;
-            }
-        }
+        
+        public int Count => Cards.Count;         
 
         public Card this[int i]
         {
-            get
-            {
-                return Cards[i];
-            }
-            set
-            {
-                Cards[i] = value;
-            }
+            get => Cards[i];
+            set => Cards[i] = value;
         }
 
         public void Full()
@@ -57,10 +37,7 @@ namespace Cards
             }
         }
 
-        public virtual Card GetCard(CardFigure figure, CardSuite suite)
-        {
-            return new Card(suite, figure);
-        }
+        public virtual Card GetCard(CardFigure figure, CardSuite suite) => new Card(suite, figure);
 
         public CardSet Deck(int amount)
         {
@@ -71,10 +48,7 @@ namespace Cards
             return cards;
         }
 
-        public virtual CardSet GetCardSet()
-        {
-            return new CardSet();
-        }
+        public virtual CardSet GetCardSet() => new CardSet();
 
         public void Mix(int count = 3)
         {
@@ -83,27 +57,22 @@ namespace Cards
             {
                 for (int j = 0; j < Count - 1; j++)
                 {
-                    int numberOfCard = random.Next(0, Cards.Count - 1);
+                    int n = rnd.Next(0, Cards.Count - 1);
                     card = Cards[j];
-                    Cards[j] = Cards[numberOfCard];
-                    Cards[numberOfCard] = card;
+                    Cards[j] = Cards[n];
+                    Cards[n] = card;
                 }
             }
         }
 
-        public void Sort()
-        {
-            Cards.Sort((card1, card2) =>
-                            card1.Figure.CompareTo(card2.Figure) == 0 ?
-                            card1.Suite.CompareTo(card2.Suite):
-                            card1.Figure.CompareTo(card2.Figure));
-        }
+        public void Sort() => Cards.Sort((card1, card2) => card1.Figure.CompareTo(card2.Figure) == 0 ? card1.Suite.CompareTo(card2.Suite) : card1.Figure.CompareTo(card2.Figure));
 
-        //Карты раздаются сверху колоды
         public CardSet Deal(int amount)
         {
-            if (amount > Count) amount = Count;
-
+            if (amount > Count)
+            {
+                amount = Count;
+            }
             CardSet currentCardSet = new CardSet();
             for (int i = 0; i < amount; i++)
             {
@@ -123,7 +92,10 @@ namespace Cards
         public Card Pull(Card card)
         {
             Card foundCard = Cards.FirstOrDefault(c => c == card);
-            if (foundCard != null) Cards.Remove(foundCard);
+            if (foundCard != null) 
+            {
+                Cards.Remove(foundCard);
+            }
             return foundCard;
         }
         
@@ -135,31 +107,16 @@ namespace Cards
             }
         }
 
-        public void Add(CardSet cards)
-        {
-            Add(cards.Cards);
-        }
+        public void Add(CardSet cards) => Add(cards.Cards);
 
-        public void Add(List<Card> cards)
-        {
-            Add(cards.ToArray());
-        }
+        public void Add(List<Card> cards) => Add(cards.ToArray());
 
-        public void Show()
+        public void Visible(bool IsVisible)
         {
             foreach (var card in Cards)
             {
-                card.Show();
+                card.Visible(IsVisible);
             }
         }
-
-        public void Hide()
-        {
-            foreach (var card in Cards)
-            {
-                card.Hide();
-            }
-        }
-
     }
 }
