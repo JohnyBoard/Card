@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,41 +16,23 @@ namespace Cards
         }
 
         public CardSuite Suite { get; set; }
+        
         public CardFigure Figure { get; set; }
 
         public bool IsOpened { get; set; }
 
-        public override bool Equals(object obj)
-        {
-            if (obj == null) return false;
-            return obj is Card ? Equals((Card)obj) : false;
-        }
-
-        public bool Equals(Card card)
-        {
-            if (card == null) return false;
-            return card.Figure == Figure && card.Suite == Suite;
-        }
+        public override bool Equals(object obj) => obj is Card && obj != null ? Equals((Card)obj) : false;
+        
+        public bool Equals(Card card) => card.Figure == Figure && card.Suite == Suite && card != null;
 
         public override string ToString()
         {
             return $"{Figure} {Suite}!!!";
         }
 
-        public virtual void Show()
-        {
-            IsOpened = true;
-        }
-
-        public virtual void Hide()
-        {
-            IsOpened = false;
-        }
-
-        public virtual void Rotate()
-        {
-            IsOpened = !IsOpened;
-        }
+        public virtual void Visible(bool IsVisible) => IsOpened = IsVisible;
+        
+        public virtual void Rotate() => IsOpened = !IsOpened;
 
         public override int GetHashCode()
         {
