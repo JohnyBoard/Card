@@ -1,14 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cards
 {
     public class CardSet
     {
-        readonly Random rnd = new Random();
+        readonly Random random = new Random();
 
         public CardSet() => Cards = new List<Card>();
 
@@ -17,8 +15,8 @@ namespace Cards
         public CardSet(params Card[] cards) => Cards = new List<Card>(cards);
 
         public List<Card> Cards { get; set; }
-        
-        public int Count => Cards.Count;         
+
+        public int Count => Cards.Count;
 
         public Card this[int i]
         {
@@ -39,28 +37,27 @@ namespace Cards
 
         public virtual Card GetCard(CardFigure figure, CardSuite suite) => new Card(suite, figure);
 
-        public CardSet Deck(int amount)
+        public void Full(int amount)
         {
-            CardSet cards = GetCardSet();
-            cards.Full();
-            cards.Sort();
-            cards.Cards.RemoveRange(0, Cards.Count - amount);
-            return cards;
+            Cards.Clear();
+            Full();
+            Cards.Sort();
+            Cards.RemoveRange(0, Cards.Count - amount);
         }
 
         public virtual CardSet GetCardSet() => new CardSet();
 
-        public void Mix(int count = 3)
+        public void Mix (int count = 3)
         {
             Card card;
             for (int i = 0; i < count; i++)
             {
                 for (int j = 0; j < Count - 1; j++)
                 {
-                    int n = rnd.Next(0, Cards.Count - 1);
+                    int numberOfCard = random.Next(0, Cards.Count - 1);
                     card = Cards[j];
-                    Cards[j] = Cards[n];
-                    Cards[n] = card;
+                    Cards[j] = Cards[numberOfCard];
+                    Cards[numberOfCard] = card;
                 }
             }
         }
@@ -82,7 +79,7 @@ namespace Cards
             return currentCardSet;
         }
 
-        public Card Pull (int number = 0)
+        public Card Pull(int number)
         {
             Card c = Cards[number];
             Cards.RemoveAt(number);
@@ -92,7 +89,7 @@ namespace Cards
         public Card Pull(Card card)
         {
             Card foundCard = Cards.FirstOrDefault(c => c == card);
-            if (foundCard != null) 
+            if (foundCard != null)
             {
                 Cards.Remove(foundCard);
             }
@@ -111,11 +108,11 @@ namespace Cards
 
         public void Add(List<Card> cards) => Add(cards.ToArray());
 
-        public void Visible(bool IsVisible)
+        public void Visible(bool r)
         {
             foreach (var card in Cards)
             {
-                card.Visible(IsVisible);
+                card.Visible(r);
             }
         }
     }
