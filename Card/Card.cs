@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Cards
 {
     public class Card
@@ -16,22 +10,19 @@ namespace Cards
         }
 
         public CardSuite Suite { get; set; }
-        
+
         public CardFigure Figure { get; set; }
 
         public bool IsOpened { get; set; }
 
         public override bool Equals(object obj) => obj is Card && obj != null ? Equals((Card)obj) : false;
-        
+
         public bool Equals(Card card) => card.Figure == Figure && card.Suite == Suite && card != null;
 
-        public override string ToString()
-        {
-            return $"{Figure} {Suite}!!!";
-        }
+        public override string ToString() => $"{Figure} {Suite}!!!";
 
-        public virtual void Visible(bool IsVisible) => IsOpened = IsVisible;
-        
+        public virtual void Visible(bool r) => IsOpened = r;
+
         public virtual void Rotate() => IsOpened = !IsOpened;
 
         public override int GetHashCode()
@@ -39,6 +30,6 @@ namespace Cards
             var hashCode = Suite.GetHashCode();
             hashCode = hashCode * -1521134295 + Figure.GetHashCode();
             return hashCode;
-        }
+        }       
     }
 }
